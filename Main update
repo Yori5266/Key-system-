@@ -1,0 +1,89 @@
+local StarterGui = game:GetService("StarterGui")
+local HttpService = game:GetService("HttpService")
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+local gui = Instance.new("ScreenGui")
+local frame = Instance.new("Frame")
+local textBox = Instance.new("TextBox")
+local submitButton = Instance.new("TextButton")
+local getKeyButton = Instance.new("TextButton")
+
+local validKey = "Sofara on Top" -- คีย์ที่ใช้ในสคริปต์
+local scriptUrl = "https://raw.githubusercontent.com/Yori5266/Main-script-/refs/heads/main/Sofara%20update%20Kick" -- URL ของสคริปต์หลัก
+
+gui.Name = "KeySystem"
+gui.Parent = player:WaitForChild("PlayerGui")
+
+frame.Size = UDim2.new(0, 300, 0, 200)
+frame.Position = UDim2.new(0.5, -150, 0.5, -100)
+frame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+frame.Parent = gui
+
+textBox.Size = UDim2.new(0, 280, 0, 50)
+textBox.Position = UDim2.new(0.5, -140, 0.3, 0)
+textBox.PlaceholderText = "Enter your key here"
+textBox.Text = ""
+textBox.TextScaled = true
+textBox.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+textBox.TextColor3 = Color3.new(1, 1, 1)
+textBox.Parent = frame
+
+submitButton.Size = UDim2.new(0, 120, 0, 40)
+submitButton.Position = UDim2.new(0.5, -60, 0.7, 0)
+submitButton.Text = "Submit"
+submitButton.TextScaled = true
+submitButton.BackgroundColor3 = Color3.new(0.2, 0.5, 0.2)
+submitButton.TextColor3 = Color3.new(1, 1, 1)
+submitButton.Parent = frame
+
+getKeyButton.Size = UDim2.new(0, 120, 0, 40)
+getKeyButton.Position = UDim2.new(0.5, -60, 0.9, 0)
+getKeyButton.Text = "Get Key"
+getKeyButton.TextScaled = true
+getKeyButton.BackgroundColor3 = Color3.new(0.5, 0.2, 0.2)
+getKeyButton.TextColor3 = Color3.new(1, 1, 1)
+getKeyButton.Parent = frame
+
+local function checkKey()
+    if textBox.Text == validKey then
+        StarterGui:SetCore("SendNotification", {
+            Title = "Key Validated",
+            Text = "Welcome, access granted! (ยินดีต้อนรับ สคริปต์ทำงาน)",
+            Duration = 5
+        })
+        
+        frame:Destroy() -- ปิด GUI
+        gui:Destroy()
+        
+        local success, result = pcall(function()
+            loadstring(game:HttpGet(scriptUrl))()
+        end)
+        
+        if not success then
+            StarterGui:SetCore("SendNotification", {
+                Title = "Script Load Failed",
+                Text = "There was an error loading the script. Please try again later.",
+                Duration = 5
+            })
+        end
+    else
+        StarterGui:SetCore("SendNotification", {
+            Title = "Invalid Key",
+            Text = "The key is incorrect. Please join our Discord for the key: discord.gg/rXuR3FG4pj",
+            Duration = 5
+        })
+    end
+end
+
+local function getKey()
+    setclipboard("discord.gg/rXuR3FG4pj")
+    StarterGui:SetCore("SendNotification", {
+        Title = "Key Link Copied",
+        Text = "The Discord link has been copied to your clipboard.",
+        Duration = 5
+    })
+end
+
+submitButton.MouseButton1Click:Connect(checkKey)
+getKeyButton.MouseButton1Click:Connect(getKey)
