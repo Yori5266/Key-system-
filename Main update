@@ -9,8 +9,8 @@ local textBox = Instance.new("TextBox")
 local submitButton = Instance.new("TextButton")
 local getKeyButton = Instance.new("TextButton")
 
-local validKey = "Sofara on Top" -- คีย์ที่ใช้ในสคริปต์
-local scriptUrl = "https://raw.githubusercontent.com/Yori5266/Main-script-/refs/heads/main/Sofara%20update%20Kick" -- URL ของสคริปต์หลัก
+local validKey = "Sofara on Top"
+local scriptUrl = "https://raw.githubusercontent.com/Yori5266/Main-script-/refs/heads/main/Sofara%20update%20Kick"
 
 gui.Name = "KeySystem"
 gui.Parent = player:WaitForChild("PlayerGui")
@@ -46,14 +46,14 @@ getKeyButton.TextColor3 = Color3.new(1, 1, 1)
 getKeyButton.Parent = frame
 
 local function checkKey()
-    if textBox.Text == validKey then
+    if string.lower(textBox.Text) == string.lower(validKey) then
         StarterGui:SetCore("SendNotification", {
             Title = "Key Validated",
             Text = "Welcome, access granted! (ยินดีต้อนรับ สคริปต์ทำงาน)",
             Duration = 5
         })
         
-        frame:Destroy() -- ปิด GUI
+        frame:Destroy()
         gui:Destroy()
         
         local success, result = pcall(function()
